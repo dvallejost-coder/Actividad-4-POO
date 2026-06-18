@@ -104,8 +104,6 @@ cuadro_texto = tk.Text(
     font=("Courier New", 12)
 )
 
-cuadro_texto.pack(pady=15)
-ventana mainloop()
 
 
 ventana.mainloop()
