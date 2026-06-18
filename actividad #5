@@ -1,0 +1,65 @@
+import tkinter as tk
+from tkinter import messagebox
+
+
+class LeerArchivo:
+    def __init__(self, nombre_archivo):
+        self.nombre_archivo = nombre_archivo
+
+    def leer(self):
+        try:
+            with open(self.nombre_archivo, "r", encoding="utf-8") as archivo:
+                return archivo.read()
+
+        except FileNotFoundError:
+            raise Exception("El archivo no existe.")
+
+        except IOError:
+            raise Exception("No se pudo leer el archivo.")
+
+
+class Ventana:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Lectura de Archivos")
+        self.root.geometry("600x400")
+
+        tk.Label(
+            root,
+            text="Lector de archivos de texto",
+            font=("Arial", 14, "bold")
+        ).pack(pady=10)
+
+        self.btn_leer = tk.Button(
+            root,
+            text="Leer Archivo",
+            command=self.leer_archivo
+        )
+        self.btn_leer.pack(pady=5)
+
+        self.area_texto = tk.Text(root, width=70, height=15)
+        self.area_texto.pack(pady=10)
+
+    def leer_archivo(self):
+        try:
+            lector = LeerArchivo("prueba.txt")
+
+            contenido = lector.leer()
+
+            self.area_texto.delete(1.0, tk.END)
+            self.area_texto.insert(tk.END, contenido)
+
+            messagebox.showinfo(
+                "Éxito",
+                "Archivo leído correctamente."
+            )
+
+        except Exception as e:
+            messagebox.showerror(
+                "Error",
+                str(e)
+            )
+
+root = tk.Tk()
+app = Ventana(root)
+root.mainloop()
